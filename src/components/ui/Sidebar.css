@@ -1,0 +1,30 @@
+.sidebar-background {
+  background-color: #f8f9fa;
+  height: 100vh;
+}
+
+
+.menu {
+  list-style-type: none;
+  padding: 0;
+}
+
+.menu-items { 
+  padding-left: 20px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  cursor: pointer;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 14px;
+  font-weight:300;
+  opacity: 60%;
+  display: flex;
+}
+
+.menu-items:hover {
+  background-color: #34495e;
+}
+
+.text-white {
+  color: white;
+}

@@ -1,0 +1,9 @@
+Transaktionshistorie von einem User
+
+SELECT t.transaction_id, t.amount, t.transaction_type, t.timestamp, t.description, 
+       t.target_account_id, a2.customer_id AS target_customer_id
+FROM transactions t
+JOIN accounts a ON t.account_id = a.account_id
+LEFT JOIN accounts a2 ON t.target_account_id = a2.account_id
+WHERE a.customer_id = 1
+ORDER BY t.timestamp DESC;
