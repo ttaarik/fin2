@@ -170,7 +170,6 @@ export default function Dashboard() {
                 className="flex items-center gap-2 text-lg font-semibold"
               >
                 <Package2 className="h-6 w-6" />
-                <span className="sr-only">Acme Inc</span>
               </Link>
               <Link href="#" className="hover:text-foreground">
                 Dashboard
@@ -179,25 +178,25 @@ export default function Dashboard() {
                 href="#"
                 className="text-muted-foreground hover:text-foreground"
               >
-                Orders
+                Balance
               </Link>
               <Link
                 href="#"
                 className="text-muted-foreground hover:text-foreground"
               >
-                Products
+                Subscriptions
               </Link>
               <Link
                 href="#"
                 className="text-muted-foreground hover:text-foreground"
               >
-                Customers
+                Transfer
               </Link>
               <Link
                 href="#"
                 className="text-muted-foreground hover:text-foreground"
               >
-                Analytics
+                Cards
               </Link>
             </nav>
           </SheetContent>
@@ -250,7 +249,7 @@ export default function Dashboard() {
                     </div>
                   ))
                 ) : (
-                  <p>No accounts found or loading...</p>
+                  <p></p>
                 )}
               </div>
               <p className="text-xs text-muted-foreground">

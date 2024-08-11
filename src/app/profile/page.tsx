@@ -44,25 +44,25 @@ export default function PorfilePage() {
                         href="#"
                         className="text-muted-foreground transition-colors hover:text-foreground"
                     >
-                        Orders
+                        Balance
                     </Link>
                     <Link
                         href="#"
                         className="text-muted-foreground transition-colors hover:text-foreground"
                     >
-                        Products
+                        Subscriptions
                     </Link>
                     <Link
                         href="#"
                         className="text-muted-foreground transition-colors hover:text-foreground"
                     >
-                        Customers
+                        Transfer
                     </Link>
                     <Link
                         href="#"
                         className="text-foreground transition-colors hover:text-foreground"
                     >
-                        Settings
+                        Cards
                     </Link>
                 </nav>
                 <Sheet>
