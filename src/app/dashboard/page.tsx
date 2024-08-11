@@ -79,13 +79,22 @@ export default function Dashboard() {
     account_type: account_type;
     balance: number;
   };
+  type Subscription = {
+    subscription_id: number;
+    customer_id: number;
+    service_name: string;
+    monthly_fee: number;
+    start_date: Date;
+
+  }
 
 
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [subscription, setSubscription] = useState<Subscription[]>([]);
+
   useEffect(() => {
     const fetchAccountsData = async () => {
       const token = localStorage.getItem("token");
-
       if (token) {
         const decodedToken = atob(token.split('.')[1]);
         const parsedToken = JSON.parse(decodedToken);
@@ -108,7 +117,29 @@ export default function Dashboard() {
       }
     };
 
+    const fetchSubscriptionData = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decodedToken = atob(token.split('.')[1]);
+        const parsedToken = JSON.parse(decodedToken);
+        const id = parsedToken["customer_id"];
+        if (id) {
+          try {
+            const response = await fetch(`http://localhost:5024/Subscription/id?id=${id}`);
+            const data = await response.json();
+            console.log(data);
+            setAccounts(data);
+          } catch (error) {
+            console.error("Error fetching accounts data:", error);
+          }
+        } else {
+          console.error("Customer ID is not available.");
+        }
+      }
+    };
+
     fetchAccountsData();
+    fetchSubscriptionData();
   }, []);
 
   return (
@@ -232,6 +263,28 @@ export default function Dashboard() {
       </header>
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <Card x-chunk="dashboard-01-chunk-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -239,18 +292,21 @@ export default function Dashboard() {
               </CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
+            <CardContent >
               <div className="text-2xl font-bold">
+
 
                 {accounts.length > 0 ? (
                   accounts.map((account) => (
-                    <div key={account.account_id}>
+                    <div>
                       € {account.balance}
                     </div>
                   ))
                 ) : (
-                  <p></p>
+                  <p>no</p>
                 )}
+
+
               </div>
               <p className="text-xs text-muted-foreground">
                 +20.1% from last month
@@ -297,9 +353,8 @@ export default function Dashboard() {
           </Card>
         </div>
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-          <Card
-            className="xl:col-span-2" x-chunk="dashboard-01-chunk-4"
-          > 
+          <Card className="xl:col-span-2" x-chunk="dashboard-01-chunk-4"
+          >
             <CardHeader className="flex flex-row items-center">
               <div className="grid gap-2">
                 <CardTitle>Transactions</CardTitle>
