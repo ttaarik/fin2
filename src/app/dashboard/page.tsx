@@ -48,14 +48,29 @@ import {
 } from "@/components/ui/table"
 
 
+import { fetchAccountsData } from '../services/accountsService';
+import { fetchSubscriptionData } from '../services/subscriptionService';
 
-
+import { Skeleton } from "@/components/ui/skeleton"
+import { fetchTransactionData } from "../services/transactionService"
 
 
 
 
 export default function Dashboard() {
 
+
+  enum account_type {
+    Girokonto,
+    Sparbuch,
+    Tagesgeldkonto
+  };
+
+  enum transaction_type{
+    withdrawal,
+    deposit,
+    transer
+  }
 
   type User = {
     customer_id: number;
@@ -68,11 +83,7 @@ export default function Dashboard() {
     city: string;
     income: string;
   };
-  enum account_type {
-    Girokonto,
-    Sparbuch,
-    Tagesgeldkonto
-  };
+
   type Account = {
     account_id: number;
     customer_id: number;
@@ -85,15 +96,28 @@ export default function Dashboard() {
     service_name: string;
     monthly_fee: number;
     start_date: Date;
-
+    end_date: Date;
+    active: number;
+  }
+  type Transaction = {
+    transaction_id: number;
+    account_id: number;
+    amount: number;
+    transaction_type: transaction_type;
+    target_account_id: number;
+    timestamp: Date;
+    description: string;
   }
 
 
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [subscription, setSubscription] = useState<Subscription[]>([]);
+  const [transaction, setTransaction] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchAccountsData = async () => {
+    const getData = async () => {
+      setLoading(true);
       const token = localStorage.getItem("token");
       if (token) {
         const decodedToken = atob(token.split('.')[1]);
@@ -102,12 +126,25 @@ export default function Dashboard() {
 
         if (id) {
           try {
-            const response = await fetch(`http://localhost:5024/id?id=${id}`);
-            const data = await response.json();
-            console.log(data); // Überprüfe, ob die Daten korrekt abgerufen werden
-            setAccounts(data);
+            const accountsData = await fetchAccountsData(id);
+            setAccounts(accountsData);
+
+            const transactionsData = await fetchTransactionData(id);
+            setTransaction(transactionsData);
+
+            const subscriptionData = await fetchSubscriptionData(id);
+
+            if (subscriptionData.length > 0) {
+              const highestSubscription = subscriptionData.reduce((prev, current) => {
+                return (prev.monthly_fee > current.monthly_fee) ? prev : current;
+              });
+              setSubscription([highestSubscription]);
+            } else {
+              setSubscription([]);
+            }
+
           } catch (error) {
-            console.error("Error fetching accounts data:", error);
+            console.error("Error fetching data:", error);
           }
         } else {
           console.error("Customer ID is not available.");
@@ -115,31 +152,10 @@ export default function Dashboard() {
       } else {
         console.error("Token is not available.");
       }
+      setLoading(false);
     };
 
-    const fetchSubscriptionData = async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const decodedToken = atob(token.split('.')[1]);
-        const parsedToken = JSON.parse(decodedToken);
-        const id = parsedToken["customer_id"];
-        if (id) {
-          try {
-            const response = await fetch(`http://localhost:5024/Subscription/id?id=${id}`);
-            const data = await response.json();
-            console.log(data);
-            setAccounts(data);
-          } catch (error) {
-            console.error("Error fetching accounts data:", error);
-          }
-        } else {
-          console.error("Customer ID is not available.");
-        }
-      }
-    };
-
-    fetchAccountsData();
-    fetchSubscriptionData();
+    getData();
   }, []);
 
   return (
@@ -264,27 +280,6 @@ export default function Dashboard() {
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           <Card x-chunk="dashboard-01-chunk-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -295,22 +290,43 @@ export default function Dashboard() {
             <CardContent >
               <div className="text-2xl font-bold">
 
+                {loading ? (
+                  <div>
+                    <Skeleton className="h-4 w-[250px]" />
+                  </div>
+                ) : (
+                  accounts.length > 0 ? (
+                    accounts.map((account) => (
+                      <div key={account.account_id}>
+                        €{account.balance !== undefined ? account.balance : "Loading..."}
+                      </div>
+                    ))
+                  ) : (
+                    <div>No balance available</div>
+                  )
+                )}
 
-                {accounts.length > 0 ? (
+              </div>
+
+              {loading ? (
+                // <div className="text-xs text-muted-foreground">Loading...</div>
+                <div className="flex items-center space-x-4">
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                  </div>
+                </div>
+              ) : (
+                accounts.length > 0 ? (
                   accounts.map((account) => (
-                    <div>
-                      € {account.balance}
+                    <div className="text-xs text-muted-foreground" key={account.account_id}>
+                      +20.1% from last month
                     </div>
                   ))
                 ) : (
-                  <p>no</p>
-                )}
-
-
-              </div>
-              <p className="text-xs text-muted-foreground">
-                +20.1% from last month
-              </p>
+                  <div>No subscriptions available</div>
+                )
+              )}
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-1">
@@ -321,10 +337,46 @@ export default function Dashboard() {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold"> 0000</div>
-              <p className="text-xs text-muted-foreground">
-                +180.1% from last month
-              </p>
+              <div className="text-2xl font-bold">
+
+                {loading ? (
+                  <div>
+                    <Skeleton className="h-4 w-[250px]" />
+                  </div>
+                ) : (
+                  subscription.length > 0 ? (
+                    subscription.map((sub) => (
+                      <div key={sub.subscription_id}>
+                        €{sub.monthly_fee !== undefined ? sub.monthly_fee : "Loading..."}
+                      </div>
+                    ))
+                  ) : (
+                    <div>No subscriptions available</div>
+                  )
+                )}
+
+              </div>
+
+              {loading ? (
+                // <div className="text-xs text-muted-foreground">Loading...</div>
+                <div className="flex items-center space-x-4">
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                  </div>
+                </div>
+              ) : (
+                subscription.length > 0 ? (
+                  subscription.map((sub) => (
+                    <div className="text-xs text-muted-foreground" key={sub.subscription_id}>
+                      Service: {sub.service_name}
+                    </div>
+                  ))
+                ) : (
+                  <div>No subscriptions available</div>
+                )
+              )}
+
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-2">
@@ -392,6 +444,24 @@ export default function Dashboard() {
                       <div className="font-medium">Liam Johnson</div>
                       <div className="hidden text-sm text-muted-foreground md:inline">
                         liam@example.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
                       </div>
                     </TableCell>
                     <TableCell className="hidden xl:table-column">

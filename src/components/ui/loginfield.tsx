@@ -26,7 +26,6 @@ const LoginField: React.FC = () => {
       
       window.location.replace("/dashboard");
     } catch (error) {
-      console.error("Error logging in:", error);
     }
 
   };
