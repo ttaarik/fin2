@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import axios from "axios";
 import Link from "next/link"
-
+import { Spinner } from "@nextui-org/spinner";
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -17,15 +17,21 @@ import { Label } from "@/components/ui/label"
 const LoginField: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const handleLogin = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.post("http://localhost:5024/login", { email, password });
       const token = response.data;
       localStorage.setItem("token", token);
-      
+
+      // document.getElementById("btn").innerHTML = '<h1>HI</h1>';
+
       window.location.replace("/dashboard");
     } catch (error) {
+      setIsLoading(false);
     }
 
   };
@@ -34,12 +40,12 @@ const LoginField: React.FC = () => {
       <CardHeader>
         <CardTitle className="text-xl">Login</CardTitle>
         <CardDescription>
-          Enter your information to create an account
+          Enter your information to log in
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
-          <div className="grid grid-cols-2 gap-4">
+          {/* <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
               <Label htmlFor="first-name">First name</Label>
               <Input id="first-name" placeholder="Max" required />
@@ -48,13 +54,13 @@ const LoginField: React.FC = () => {
               <Label htmlFor="last-name">Last name</Label>
               <Input id="last-name" placeholder="Robinson" required />
             </div>
-          </div>
+          </div> */}
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
-              placeholder="m@example.com" 
+              placeholder="m@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -62,13 +68,25 @@ const LoginField: React.FC = () => {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
-          <Button type="submit" onClick={handleLogin} className="w-full">
-            Sign in
-          </Button>
+
+
+          <div>
+            {isLoading ? (
+              <Button className="w-full h-full">
+                <Spinner size='sm' label="Loading..." labelColor="success" color="success" />
+              </Button>
+
+            ) : (
+              <Button type="submit" id='btn' onClick={handleLogin} className="w-full">
+                Log in
+              </Button>
+            )}
+          </div>
+
           <Button variant="outline" className="w-full">
-            Sign in with Google
+            Log in with Google
           </Button>
         </div>
         <div className="mt-4 text-center text-sm">
@@ -82,4 +100,4 @@ const LoginField: React.FC = () => {
   )
 }
 
-export {LoginField};
+export { LoginField };
