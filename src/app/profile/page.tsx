@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Avatar } from "@nextui-org/react";
+import { Label } from "@/components/ui/label"
 
 export default function PorfilePage() {
     return (
@@ -60,7 +62,7 @@ export default function PorfilePage() {
                     </Link>
                     <Link
                         href="#"
-                        className="text-foreground transition-colors hover:text-foreground"
+                        className="text-muted-foreground transition-colors hover:text-foreground"
                     >
                         Cards
                     </Link>
@@ -146,7 +148,7 @@ export default function PorfilePage() {
             </header>
             <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
                 <div className="mx-auto grid w-full max-w-6xl gap-2">
-                    <h1 className="text-3xl font-semibold">Settings</h1>
+                    <h1 className="text-3xl font-semibold">Profile</h1>
                 </div>
                 <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
                     <nav
@@ -155,14 +157,13 @@ export default function PorfilePage() {
                         <Link href="#" className="font-semibold text-primary">
                             General
                         </Link>
-                        <Link href="#">Security</Link>
-                        <Link href="#">Integrations</Link>
+                        <Link href="#">Password</Link>
+                        <Link href="#">Notifications</Link>
                         <Link href="#">Support</Link>
-                        <Link href="#">Organizations</Link>
-                        <Link href="#">Advanced</Link>
                     </nav>
                     <div className="grid gap-6">
-                        <Card x-chunk="dashboard-04-chunk-1">
+
+                        {/* <Card x-chunk="dashboard-04-chunk-1">
                             <CardHeader>
                                 <CardTitle>Store Name</CardTitle>
                                 <CardDescription>
@@ -206,7 +207,26 @@ export default function PorfilePage() {
                             <CardFooter className="border-t px-6 py-4">
                                 <Button>Save</Button>
                             </CardFooter>
+                        </Card> */}
+
+                        <Card x-chunk="dashboard-04-chunk-1">
+                            <CardContent>
+                                <div className="flex float-left">
+                                    <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026708c" className="w-40 h-40 text-large" />
+
+
+                                    <div className="grid max-w-sm items-center ml-[1em] gap-1.5">
+                                        <Input type="file" />
+                                    </div>
+
+                                </div>
+                            </CardContent>
+
                         </Card>
+
+
+
+
                     </div>
                 </div>
             </main>
