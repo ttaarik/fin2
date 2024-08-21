@@ -1,0 +1,17 @@
+input[type="file"] {
+    display: none;
+}
+
+#btnlabel {
+    display: inline-block;
+    color: #fff;
+    width: fit-content;
+    background: black;
+    text-align: center;
+    padding: 15px 30px;
+    letter-spacing: 1.5px;
+    user-select: none;
+    cursor: pointer;
+    border-radius: 50px;
+    font-size: smaller;
+}

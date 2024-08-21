@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -9,7 +10,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -18,13 +18,121 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+// import { Input } from "@/components/ui/input" //shadcn
+// import { Input } from "@nextui-org/input";        //nextuis
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Avatar } from "@nextui-org/react";
-import { Label } from "@/components/ui/label"
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import './FileUpload.css';
+import React from "react";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+
+
+
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
+
+
+
+
+
+
+
+
+
+import { CheckIcon, ChevronsUpDown } from "lucide-react";
+
+
+import * as RPNInput from "react-phone-number-input";
+
+import flags from "react-phone-number-input/flags";
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Input, InputProps } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import PhoneInput from 'react-phone-input-2';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const formSchema = z.object({
+    vorname: z.string().min(2, {
+        message: "Username must be at least 2 characters.",
+    }),
+    nachname: z.string().min(2, {
+        message: "Username must be at least 2 characters.",
+    }),
+})
+
 
 export default function PorfilePage() {
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            vorname: "",
+            nachname: "",
+        },
+    })
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Do something with the form values.
+        // ✅ This will be type-safe and validated.
+        console.log(values)
+    }
+
+
+    const [isVisible, setIsVisible] = React.useState(false);
+
+    const toggleVisibility = () => setIsVisible(!isVisible);
     return (
+
 
         <div className="flex min-h-screen w-full flex-col">
             <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -163,7 +271,7 @@ export default function PorfilePage() {
                     </nav>
                     <div className="grid gap-6">
 
-                        {/* <Card x-chunk="dashboard-04-chunk-1">
+                        {/* <Card>
                             <CardHeader>
                                 <CardTitle>Store Name</CardTitle>
                                 <CardDescription>
@@ -209,25 +317,110 @@ export default function PorfilePage() {
                             </CardFooter>
                         </Card> */}
 
-                        <Card x-chunk="dashboard-04-chunk-1">
-                            <CardContent>
-                                <div className="flex float-left">
-                                    <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026708c" className="w-40 h-40 text-large" />
-
-
-                                    <div className="grid max-w-sm items-center ml-[1em] gap-1.5">
-                                        <Input type="file" />
+                        <Card>
+                            <div className="float-left">
+                                <CardContent className="flex mt-[1.3em]">
+                                    <div className="flex items-center space-x-4 m-auto">
+                                        <Avatar className="ml-[1em] w-1/3 h-1/3">
+                                            <AvatarImage src="https://github.com/shadcn.png" />
+                                            <AvatarFallback className="ml-[1em] w-1/3 h-1/3">CN</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <input type="file" id="uploadBtn" className="hidden" />
+                                            <label
+                                                id="btnlabel"
+                                                htmlFor="uploadBtn"
+                                                className="cursor-pointer text-blue-500 hover:text-blue-700"
+                                            >
+                                                Upload Image
+                                            </label>
+                                        </div>
                                     </div>
-
-                                </div>
-                            </CardContent>
-
+                                </CardContent>
+                            </div>
                         </Card>
 
+                        <Card x-chunk="dashboard-04-chunk-1">
+                            <CardHeader>
+                                <CardTitle>General Infos</CardTitle>
+                                {/* <CardDescription>
+                                    Used to identify your store in the marketplace.
+                                </CardDescription> */}
+                            </CardHeader>
+                            <CardContent>
+                                <Form {...form}>
+                                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                                        <div className="flex space-x-4">
+                                            <FormField
+                                                control={form.control}
+                                                name="vorname"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Vorname</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="Tarik" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={form.control}
+                                                name="nachname"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Nachname</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="Kadric" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+                                        <div className="flex space-x-4">
+                                            <FormField
+                                                control={form.control}
+                                                name="vorname"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>E-Mail</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="kadric.tarik@hotmail.com" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={form.control}
+                                                name="nachname"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Mobile Number</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="Nachname" {...field} />
+                                                            
+                                                           
 
 
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+
+                                    </form>
+                                </Form>
+                            </CardContent>
+                            <CardFooter className="border-t px-6 py-4">
+                                <Button type="submit">Save changes</Button>
+                            </CardFooter>
+                        </Card>
 
                     </div>
+
                 </div>
             </main>
         </div>

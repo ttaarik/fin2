@@ -12,6 +12,9 @@ ORDER BY t.timestamp DESC;
 
 wenn man auf das profile icon klickt dann nur logout oder aufs profil kommen
 
+combobox für telefon number in profil page von shadcn
+
+beim login diese lade animation nach dem klicken vlt mit shadcn reloadicon button machen? anstatt dieses loading ding von nextui
 
 man könnte ein Skeleton einbauen von NextUI
 
