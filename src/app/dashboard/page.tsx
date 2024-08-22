@@ -445,13 +445,14 @@ export default function Dashboard() {
                   {/* hier eine foreach (für jede transaktion einen Tablerow und diesen dann mit Daten füllen) */}
                   {loading ? (
                     // <div className="text-xs text-muted-foreground">Loading...</div>
-                    
-                      <Skeleton className="h-4 w-[200px]" />
+
+                    <Skeleton className="h-4 w-[200px]" />
 
                   ) : (
                     transaction.length > 0 ? (
                       transaction.map((tr) => (
-                          <TableRow  key={tr.account_id}>
+                        <div key={tr.account_id}>
+                          <TableRow>
                             <TableCell>
                               <div className="font-medium">Liam Johnson</div>
                               <div className="hidden text-sm text-muted-foreground md:inline">
@@ -471,6 +472,8 @@ export default function Dashboard() {
                             </TableCell>
                             <TableCell className="text-right">$ {tr.amount}</TableCell>
                           </TableRow>
+                        </div>
+
 
                       ))
                     ) : (
