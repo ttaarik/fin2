@@ -57,47 +57,26 @@ import * as RPNInput from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
 
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
 } from "@/components/ui/command";
 import { Input, InputProps } from "@/components/ui/input";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
 } from "@/components/ui/popover";
 
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import PhoneInput from 'react-phone-input-2';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import { PhoneInput } from "@/components/ui/phone-input";
+import { toast } from "@/components/ui/use-toast";
+import { isValidPhoneNumber } from "react-phone-number-input";
 
 
 
@@ -107,6 +86,9 @@ const formSchema = z.object({
     }),
     nachname: z.string().min(2, {
         message: "Username must be at least 2 characters.",
+    }),
+    phone: z.string().refine(isValidPhoneNumber, {
+        message: "Invalid phone number"
     }),
 })
 
@@ -118,13 +100,19 @@ export default function PorfilePage() {
         defaultValues: {
             vorname: "",
             nachname: "",
+            phone: "",
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    function onSubmit(data: z.infer<typeof formSchema>) {
+        toast({
+            title: "You submitted the following values:",
+            description: (
+                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+                </pre>
+            ),
+        });
     }
 
 
@@ -394,17 +382,16 @@ export default function PorfilePage() {
                                             />
                                             <FormField
                                                 control={form.control}
-                                                name="nachname"
+                                                name="phone"
                                                 render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Mobile Number</FormLabel>
-                                                        <FormControl>
-                                                            <Input placeholder="Nachname" {...field} />
-                                                            
-                                                           
-
-
+                                                    <FormItem className="flex flex-col items-start">
+                                                        <FormLabel className="text-left">Phone Number</FormLabel>
+                                                        <FormControl className="w-full">
+                                                            <PhoneInput placeholder="Enter a phone number" {...field} />
                                                         </FormControl>
+                                                        <FormDescription className="text-left">
+                                                            Enter a phone number
+                                                        </FormDescription>
                                                         <FormMessage />
                                                     </FormItem>
                                                 )}
