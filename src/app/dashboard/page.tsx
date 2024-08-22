@@ -483,7 +483,7 @@ export default function Dashboard() {
                     <TableCell>
                       <div className="font-medium">Olivia Smith</div>
                       <div className="hidden text-sm text-muted-foreground md:inline">
-                        olivia@example.com
+                        olivia@example.comtest
                       </div>
                     </TableCell>
                     <TableCell className="hidden xl:table-column">
