@@ -24,3 +24,5 @@ modal einbauen wie bei BTV SECURITY wenn man überweisen möchte (alle daten anz
 
 popover wenn transaktion erfolgreich war von NextUI
 
+
+bug fixen bei profile page, wenn man runter scrollt ist der Avatar über der TOPNAV

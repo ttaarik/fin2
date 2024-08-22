@@ -137,7 +137,7 @@ export default function Dashboard() {
             const subscriptionData = await fetchSubscriptionData(id);
 
             if (subscriptionData.length > 0) {
-              const highestSubscription = subscriptionData.reduce((prev, current) => {
+              const highestSubscription = subscriptionData.reduce((prev: { monthly_fee: number }, current: { monthly_fee: number }) => {
                 return (prev.monthly_fee > current.monthly_fee) ? prev : current;
               });
               setSubscription([highestSubscription]);
@@ -451,7 +451,7 @@ export default function Dashboard() {
                   ) : (
                     transaction.length > 0 ? (
                       transaction.map((tr) => (
-                          <TableRow>
+                          <TableRow  key={tr.account_id}>
                             <TableCell>
                               <div className="font-medium">Liam Johnson</div>
                               <div className="hidden text-sm text-muted-foreground md:inline">

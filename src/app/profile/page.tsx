@@ -78,7 +78,9 @@ import { PhoneInput } from "@/components/ui/phone-input";
 import { toast } from "@/components/ui/use-toast";
 import { isValidPhoneNumber } from "react-phone-number-input";
 
-
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 
 const formSchema = z.object({
     vorname: z.string().min(2, {
@@ -87,8 +89,17 @@ const formSchema = z.object({
     nachname: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
+    email: z.string().min(2, {
+        message: "Username must be at least 2 characters.",
+    }),
+    tax: z.string().min(2, {
+        message: "Username must be at least 2 characters.",
+    }),
     phone: z.string().refine(isValidPhoneNumber, {
         message: "Invalid phone number"
+    }),
+    gender: z.string().refine(isValidPhoneNumber, {
+        message: "Invalid gender"
     }),
 })
 
@@ -100,7 +111,10 @@ export default function PorfilePage() {
         defaultValues: {
             vorname: "",
             nachname: "",
+            email: "",
             phone: "",
+            gender: "",
+            tax: "",
         },
     })
 
@@ -123,7 +137,7 @@ export default function PorfilePage() {
 
 
         <div className="flex min-h-screen w-full flex-col">
-            <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+            <header className="sticky z-20 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
                 <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                     <Link
                         href="#"
@@ -308,17 +322,17 @@ export default function PorfilePage() {
                         <Card>
                             <div className="float-left">
                                 <CardContent className="flex mt-[1.3em]">
-                                    <div className="flex items-center space-x-4 m-auto">
+                                    <div className="flex items-center z-0 space-x-4 m-auto">
                                         <Avatar className="ml-[1em] w-1/3 h-1/3">
-                                            <AvatarImage src="https://github.com/shadcn.png" />
-                                            <AvatarFallback className="ml-[1em] w-1/3 h-1/3">CN</AvatarFallback>
+                                            {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
+                                            <AvatarFallback className="ml-[1em] absolute w-16 h-16">CN</AvatarFallback>
                                         </Avatar>
                                         <div>
                                             <input type="file" id="uploadBtn" className="hidden" />
                                             <label
                                                 id="btnlabel"
                                                 htmlFor="uploadBtn"
-                                                className="cursor-pointer text-blue-500 hover:text-blue-700"
+                                                className="cursor-pointer w-1/3 text-blue-500 hover:text-blue-700"
                                             >
                                                 Upload Image
                                             </label>
@@ -331,9 +345,6 @@ export default function PorfilePage() {
                         <Card x-chunk="dashboard-04-chunk-1">
                             <CardHeader>
                                 <CardTitle>General Infos</CardTitle>
-                                {/* <CardDescription>
-                                    Used to identify your store in the marketplace.
-                                </CardDescription> */}
                             </CardHeader>
                             <CardContent>
                                 <Form {...form}>
@@ -343,7 +354,7 @@ export default function PorfilePage() {
                                                 control={form.control}
                                                 name="vorname"
                                                 render={({ field }) => (
-                                                    <FormItem>
+                                                    <FormItem className="w-full">
                                                         <FormLabel>Vorname</FormLabel>
                                                         <FormControl>
                                                             <Input placeholder="Tarik" {...field} />
@@ -356,7 +367,7 @@ export default function PorfilePage() {
                                                 control={form.control}
                                                 name="nachname"
                                                 render={({ field }) => (
-                                                    <FormItem>
+                                                    <FormItem className="w-full">
                                                         <FormLabel>Nachname</FormLabel>
                                                         <FormControl>
                                                             <Input placeholder="Kadric" {...field} />
@@ -369,9 +380,9 @@ export default function PorfilePage() {
                                         <div className="flex space-x-4">
                                             <FormField
                                                 control={form.control}
-                                                name="vorname"
+                                                name="email"
                                                 render={({ field }) => (
-                                                    <FormItem>
+                                                    <FormItem className="w-full">
                                                         <FormLabel>E-Mail</FormLabel>
                                                         <FormControl>
                                                             <Input placeholder="kadric.tarik@hotmail.com" {...field} />
@@ -384,14 +395,52 @@ export default function PorfilePage() {
                                                 control={form.control}
                                                 name="phone"
                                                 render={({ field }) => (
-                                                    <FormItem className="flex flex-col items-start">
+                                                    <FormItem className="w-full">
                                                         <FormLabel className="text-left">Phone Number</FormLabel>
-                                                        <FormControl className="w-full">
+                                                        <FormControl>
                                                             <PhoneInput placeholder="Enter a phone number" {...field} />
                                                         </FormControl>
-                                                        <FormDescription className="text-left">
-                                                            Enter a phone number
-                                                        </FormDescription>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+                                        <div className="flex space-x-4">
+                                            <FormField
+                                                control={form.control}
+                                                name="gender"
+                                                render={({ field }) => (
+                                                    <FormItem className="w-full">
+                                                        <FormLabel className="text-left">Gender</FormLabel>
+                                                        <FormControl>
+                                                            <RadioGroup {...field} className="w-full">
+                                                                <div className="flex items-center space-x-2">
+                                                                    <RadioGroupItem value="male" id="r1" />
+                                                                    <Label htmlFor="r1">Male</Label>
+                                                                </div>
+                                                                <div className="flex items-center space-x-2">
+                                                                    <RadioGroupItem value="female" id="r2" />
+                                                                    <Label htmlFor="r2">Female</Label>
+                                                                </div>
+                                                                <div className="flex items-center space-x-2">
+                                                                    <RadioGroupItem value="private" id="r3" />
+                                                                    <Label htmlFor="r3">Keep it private</Label>
+                                                                </div>
+                                                            </RadioGroup>
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={form.control}
+                                                name="tax"
+                                                render={({ field }) => (
+                                                    <FormItem className="w-full">
+                                                        <FormLabel>Steuernummer</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="ASKLA54 KK93" {...field} />
+                                                        </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
                                                 )}
@@ -399,15 +448,30 @@ export default function PorfilePage() {
                                         </div>
 
                                     </form>
+
                                 </Form>
+
                             </CardContent>
+
+
+
                             <CardFooter className="border-t px-6 py-4">
                                 <Button type="submit">Save changes</Button>
                             </CardFooter>
                         </Card>
 
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Contact Support</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="grid w-full gap-2">
+                                    <Textarea placeholder="Type your message here." />
+                                    <Button>Contact us</Button>
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
-
                 </div>
             </main>
         </div>
