@@ -324,7 +324,7 @@ export default function PorfilePage() {
                                 <CardContent className="flex mt-[1.3em]">
                                     <div className="flex items-center z-0 space-x-4 m-auto">
                                         <Avatar className="ml-[1em] w-1/3 h-1/3">
-                                            {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
+                                            <AvatarImage src="https://github.com/shadcn.png" />
                                             <AvatarFallback className="ml-[1em] absolute w-16 h-16">CN</AvatarFallback>
                                         </Avatar>
                                         <div>
