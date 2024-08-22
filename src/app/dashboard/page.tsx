@@ -478,7 +478,7 @@ export default function Dashboard() {
                   )}
 
 
-
+{/* 
                   <TableRow>
                     <TableCell>
                       <div className="font-medium">Olivia Smith</div>
@@ -558,7 +558,7 @@ export default function Dashboard() {
                       2023-06-27
                     </TableCell>
                     <TableCell className="text-right">$550.00</TableCell>
-                  </TableRow>
+                  </TableRow> */}
                 </TableBody>
               </Table>
             </CardContent>
