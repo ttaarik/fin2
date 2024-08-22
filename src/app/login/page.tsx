@@ -1,10 +1,10 @@
-import {Dashboard} from "@/components/ui/loginfield"
+import {LoginField} from "@/components/ui/loginfield"
 
 
 export default function LoginPage() {
   return (
     <>
-      <Dashboard></Dashboard>
+      <LoginField></LoginField>
     </>
   )
 } 

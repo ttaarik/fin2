@@ -112,7 +112,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import pathimg from "@/app/logo-white.png";
 
-export function Dashboard() {
+export function LoginField() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
