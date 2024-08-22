@@ -443,7 +443,7 @@ export default function Dashboard() {
                 <TableBody>
 
                   {/* hier eine foreach (für jede transaktion einen Tablerow und diesen dann mit Daten füllen) */}
-                  {loading ? (
+                  {/* {loading ? (
                     // <div className="text-xs text-muted-foreground">Loading...</div>
 
                     <Skeleton className="h-4 w-[200px]" />
@@ -475,10 +475,10 @@ export default function Dashboard() {
                     ) : (
                       <div>No subscriptions available</div>
                     )
-                  )}
+                  )} */}
 
 
-{/* 
+
                   <TableRow>
                     <TableCell>
                       <div className="font-medium">Olivia Smith</div>
@@ -558,7 +558,7 @@ export default function Dashboard() {
                       2023-06-27
                     </TableCell>
                     <TableCell className="text-right">$550.00</TableCell>
-                  </TableRow> */}
+                  </TableRow>
                 </TableBody>
               </Table>
             </CardContent>
