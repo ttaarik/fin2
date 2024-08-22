@@ -451,7 +451,7 @@ export default function Dashboard() {
                   ) : (
                     transaction.length > 0 ? (
                       transaction.map((tr) => (
-                        <div key={tr.account_id}>
+                        <div key={tr.transaction_id}>
                           <TableRow>
                             <TableCell>
                               <div className="font-medium">Liam Johnson</div>
