@@ -452,7 +452,7 @@ export default function Dashboard() {
                     transaction.length > 0 ? (
                       transaction.map((tr) => (
                         <div key={tr.transaction_id}>
-                          <TableRow>
+                          <TableRow key={tr.transaction_id}>
                             <TableCell>
                               <div className="font-medium">Liam Johnson</div>
                               <div className="hidden text-sm text-muted-foreground md:inline">
