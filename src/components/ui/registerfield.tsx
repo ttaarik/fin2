@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export function LoginField() {
+export function RegisterField() {
   return (
     <Card className="mx-auto mt-[7em] max-w-sm">
       <CardHeader>
