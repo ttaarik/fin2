@@ -9,14 +9,13 @@ WHERE a.customer_id = 1
 ORDER BY t.timestamp DESC;
 
 
+withdrawahl - abhebung
+deposit - einzahlung
+transfer - überweisung
 
 wenn man auf das profile icon klickt dann nur logout oder aufs profil kommen
 
-combobox für telefon number in profil page von shadcn
-
 beim login diese lade animation nach dem klicken vlt mit shadcn reloadicon button machen? anstatt dieses loading ding von nextui
-
-man könnte ein Skeleton einbauen von NextUI
 
 bei überweisung (transactions) könnte man einen slider von NextUI verwenden um anzugeben wie viel man überweisen will
 
@@ -24,5 +23,3 @@ modal einbauen wie bei BTV SECURITY wenn man überweisen möchte (alle daten anz
 
 popover wenn transaktion erfolgreich war von NextUI
 
-
-bug fixen bei profile page, wenn man runter scrollt ist der Avatar über der TOPNAV

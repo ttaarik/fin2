@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import {
   Activity,
   ArrowUpRight,
+  ChevronLeft,
   CircleUser,
   CreditCard,
   DollarSign,
@@ -54,8 +55,16 @@ import { fetchSubscriptionData } from '../services/subscriptionService';
 import { Skeleton } from "@/components/ui/skeleton"
 import { fetchTransactionData } from "../services/transactionService"
 
-
-
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+import { ChevronRight } from "lucide-react"
 
 export default function Dashboard() {
 
@@ -101,19 +110,41 @@ export default function Dashboard() {
   }
   type Transaction = {
     transaction_id: number;
-    account_id: number;
+    sender_account_id: number;
+    receiver_account_id: number;
     amount: number;
     transaction_type: transaction_type;
-    target_account_id: number;
     timestamp: Date;
     description: string;
+    sender_first_name: string;
+    sender_last_name: string;
+    sender_email: string;
+    receiver_first_name?: string;
+    receiver_last_name?: string;
+    receiver_email?: string;
   }
 
 
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [subscription, setSubscription] = useState<Subscription[]>([]);
-  const [transaction, setTransaction] = useState<Transaction[]>([]);
+
+  const [incomeTransactions, setIncomeTransactions] = useState<Transaction[]>([]);
+  const [expenseTransactions, setExpenseTransactions] = useState<Transaction[]>([]);
+
   const [loading, setLoading] = useState<boolean>(true);
+
+
+  const itemsPerPage = 3;
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(expenseTransactions.length / itemsPerPage);
+
+  const paginatedData = expenseTransactions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
 
   useEffect(() => {
     const getData = async () => {
@@ -126,20 +157,38 @@ export default function Dashboard() {
 
         if (id) {
           try {
+            // Abrufen der Konten
             const accountsData = await fetchAccountsData(id);
             setAccounts(accountsData);
+            console.log(accountsData)
 
+            // Abrufen der Transaktionen
             const transactionsData = await fetchTransactionData(id);
-            setTransaction(transactionsData);
-            console.log(transactionsData);
 
+            // Abrufen aller Konto-IDs des Benutzers
+            const userAccountIds = accountsData.map(account => account.account_id);
 
+            // Filtern der eingehenden Transaktionen
+            const incoming = transactionsData.filter(tr =>
+              userAccountIds.includes(tr.receiver_account_id) &&
+              (tr.transaction_type === "deposit" || tr.transaction_type === "transfer")
+            );
+
+            // Filtern der ausgehenden Transaktionen
+            const outgoing = transactionsData.filter(tr =>
+              userAccountIds.includes(tr.sender_account_id) &&
+              (tr.transaction_type === "withdrawal" || tr.transaction_type === "transfer")
+            );
+
+            setIncomeTransactions(incoming);
+            setExpenseTransactions(outgoing);
+
+            // Abrufen der Abonnements
             const subscriptionData = await fetchSubscriptionData(id);
-
             if (subscriptionData.length > 0) {
-              const highestSubscription = subscriptionData.reduce((prev: { monthly_fee: number }, current: { monthly_fee: number }) => {
-                return (prev.monthly_fee > current.monthly_fee) ? prev : current;
-              });
+              const highestSubscription = subscriptionData.reduce((prev, current) =>
+                (prev.monthly_fee > current.monthly_fee) ? prev : current
+              );
               setSubscription([highestSubscription]);
             } else {
               setSubscription([]);
@@ -291,26 +340,29 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent >
               <div className="text-2xl font-bold">
-
                 {loading ? (
                   <div>
                     <Skeleton className="h-4 w-[250px]" />
                   </div>
                 ) : (
                   accounts.length > 0 ? (
-                    accounts.map((account) => (
-                      <div key={account.account_id}>
-                        €{account.balance !== undefined ? account.balance : "Loading..."}
-                      </div>
-                    ))
+                    accounts
+                      .filter((account) => account.account_type === 'Girokonto')
+                      .map((account) => (
+                        <div key={account.account_id}>
+                          €{account.balance}
+                        </div>
+                      ))
                   ) : (
                     <div>No balance available</div>
                   )
                 )}
-
               </div>
 
-              {loading ? (
+              <div className="text-xs text-muted-foreground">
+                +20.1% from last month
+              </div>
+              {/* {loading ? (
                 // <div className="text-xs text-muted-foreground">Loading...</div>
                 <div className="flex items-center space-x-4">
                   <div className="space-y-2">
@@ -328,7 +380,7 @@ export default function Dashboard() {
                 ) : (
                   <div>No subscriptions available</div>
                 )
-              )}
+              )} */}
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-1">
@@ -441,25 +493,22 @@ export default function Dashboard() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-
-                  {/* hier eine foreach (für jede transaktion einen Tablerow und diesen dann mit Daten füllen) */}
-                  {/* {loading ? (
-                    // <div className="text-xs text-muted-foreground">Loading...</div>
-
+                  {loading ? (
                     <Skeleton className="h-4 w-[200px]" />
-
                   ) : (
-                    transaction.length > 0 ? (
-                      transaction.map((tr) => (
+                    paginatedData.length > 0 ? (
+                      paginatedData.map((tr) => (
                         <TableRow key={tr.transaction_id}>
                           <TableCell>
-                            <div className="font-medium">Liam Johnson</div>
+                            <div className="font-medium">
+                              {tr.receiver_first_name} {tr.receiver_last_name}
+                            </div>
                             <div className="hidden text-sm text-muted-foreground md:inline">
-                              liam@example.com
+                              {tr.receiver_email}
                             </div>
                           </TableCell>
                           <TableCell className="hidden xl:table-column">
-                            Sale
+                            {tr.transaction_type === 'withdrawal' ? 'Withdrawal' : 'Transfer'}
                           </TableCell>
                           <TableCell className="hidden xl:table-column">
                             <Badge className="text-xs" variant="outline">
@@ -467,186 +516,83 @@ export default function Dashboard() {
                             </Badge>
                           </TableCell>
                           <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                            2023-06-23
+                            {new Date(tr.timestamp).toDateString()}
                           </TableCell>
-                          <TableCell className="text-right">$ {tr.amount}</TableCell>
+                          <TableCell className="text-right">-€{tr.amount}</TableCell>
                         </TableRow>
                       ))
                     ) : (
-                      <div>No subscriptions available</div>
+                      <div>No transactions available</div>
                     )
-                  )} */}
-
-
-
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Olivia Smith</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        olivia@example.comtest
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Refund
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Declined
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-24
-                    </TableCell>
-                    <TableCell className="text-right">$150.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Noah Williams</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        noah@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Subscription
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-25
-                    </TableCell>
-                    <TableCell className="text-right">$350.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Emma Brown</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        emma@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-26
-                    </TableCell>
-                    <TableCell className="text-right">$450.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Liam Johnson</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        liam@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-27
-                    </TableCell>
-                    <TableCell className="text-right">$550.00</TableCell>
-                  </TableRow>
+                  )}
                 </TableBody>
+
               </Table>
+
+              <div className="flex justify-between items-center mt-4">
+                <Button disabled={currentPage === 1}
+                  onClick={() => setCurrentPage(currentPage - 1)} variant="outline" size="icon">
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+
+                <span>
+                  Page {currentPage} of {totalPages}
+                </span>
+
+
+                <Button disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage(currentPage + 1)} variant="outline" size="icon">
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+
+              </div>
+
             </CardContent>
+
           </Card>
+
+
+
+
           <Card x-chunk="dashboard-01-chunk-5">
             <CardHeader>
               <CardTitle>Bank income</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-8">
-              <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                  <AvatarFallback>OM</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Olivia Martin
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    olivia.martin@email.com
-                  </p>
+
+
+
+              {loading ? (
+                <div>
+                  <Skeleton className="h-4 w-[200px]" />
                 </div>
-                <div className="ml-auto font-medium">+$1,999.00</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/02.png" alt="Avatar" />
-                  <AvatarFallback>JL</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Jackson Lee
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    jackson.lee@email.com
-                  </p>
-                </div>
-                <div className="ml-auto font-medium">+$39.00</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/03.png" alt="Avatar" />
-                  <AvatarFallback>IN</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Isabella Nguyen
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    isabella.nguyen@email.com
-                  </p>
-                </div>
-                <div className="ml-auto font-medium">+$299.00</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/04.png" alt="Avatar" />
-                  <AvatarFallback>WK</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    William Kim
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    will@email.com
-                  </p>
-                </div>
-                <div className="ml-auto font-medium">+$99.00</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/05.png" alt="Avatar" />
-                  <AvatarFallback>SD</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Sofia Davis
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    sofia.davis@email.com
-                  </p>
-                </div>
-                <div className="ml-auto font-medium">+$39.00</div>
-              </div>
+              ) : (
+                incomeTransactions.length > 0 ? (
+                  incomeTransactions.map((tr) => (
+                    <div key={tr.transaction_id} className="flex items-center gap-4">
+                      <Avatar className="hidden h-9 w-9 sm:flex">
+                        <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                        <AvatarFallback>{tr.sender_first_name[0]}{tr.sender_last_name[0]}</AvatarFallback>
+                      </Avatar>
+                      <div className="grid gap-1">
+                        <p className="text-sm font-medium leading-none">
+                          {tr.sender_first_name} {tr.sender_last_name}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {tr.sender_email}
+                        </p>
+                      </div>
+                      <div className="ml-auto font-medium">+${tr.amount}€</div>
+                    </div>
+                  ))
+                ) : (
+                  <div>Keine Income verfügbar</div>
+                )
+              )}
             </CardContent>
           </Card>
         </div>
-      </main>
-    </div>
+      </main >
+    </div >
   )
 }
