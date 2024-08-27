@@ -159,8 +159,7 @@ export default function Dashboard() {
           try {
             // Abrufen der Konten
             const accountsData = await fetchAccountsData(id);
-            setAccounts(accountsData);
-            console.log(accountsData)
+            
 
             // Abrufen der Transaktionen
             const transactionsData = await fetchTransactionData(id);
@@ -182,6 +181,7 @@ export default function Dashboard() {
 
             setIncomeTransactions(incoming);
             setExpenseTransactions(outgoing);
+            setAccounts(accountsData);
 
             // Abrufen der Abonnements
             const subscriptionData = await fetchSubscriptionData(id);
