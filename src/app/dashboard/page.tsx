@@ -166,16 +166,16 @@ export default function Dashboard() {
             const transactionsData = await fetchTransactionData(id);
 
             // Abrufen aller Konto-IDs des Benutzers
-            const userAccountIds = accountsData.map(account => account.account_id);
+            const userAccountIds = accountsData.map((account: { account_id: any }) => account.account_id);
 
             // Filtern der eingehenden Transaktionen
-            const incoming = transactionsData.filter(tr =>
+            const incoming = transactionsData.filter((tr: { receiver_account_id: any; transaction_type: string }) =>
               userAccountIds.includes(tr.receiver_account_id) &&
               (tr.transaction_type === "deposit" || tr.transaction_type === "transfer")
             );
 
             // Filtern der ausgehenden Transaktionen
-            const outgoing = transactionsData.filter(tr =>
+            const outgoing = transactionsData.filter((tr: { sender_account_id: any; transaction_type: string }) =>
               userAccountIds.includes(tr.sender_account_id) &&
               (tr.transaction_type === "withdrawal" || tr.transaction_type === "transfer")
             );
@@ -186,7 +186,7 @@ export default function Dashboard() {
             // Abrufen der Abonnements
             const subscriptionData = await fetchSubscriptionData(id);
             if (subscriptionData.length > 0) {
-              const highestSubscription = subscriptionData.reduce((prev, current) =>
+              const highestSubscription = subscriptionData.reduce((prev: { monthly_fee: number }, current: { monthly_fee: number }) =>
                 (prev.monthly_fee > current.monthly_fee) ? prev : current
               );
               setSubscription([highestSubscription]);
@@ -347,7 +347,7 @@ export default function Dashboard() {
                 ) : (
                   accounts.length > 0 ? (
                     accounts
-                      .filter((account) => account.account_type === 'Girokonto')
+                      .filter((account) => account.account_type === account_type.Girokonto)
                       .map((account) => (
                         <div key={account.account_id}>
                           €{account.balance}
@@ -508,7 +508,7 @@ export default function Dashboard() {
                             </div>
                           </TableCell>
                           <TableCell className="hidden xl:table-column">
-                            {tr.transaction_type === 'withdrawal' ? 'Withdrawal' : 'Transfer'}
+                            {tr.transaction_type === transaction_type.withdrawal ? 'Withdrawal' : 'Transfer'}
                           </TableCell>
                           <TableCell className="hidden xl:table-column">
                             <Badge className="text-xs" variant="outline">
