@@ -125,7 +125,6 @@ export function RegisterField() {
         </CardContent>
       </Card>
 
-      {/* AlertDialog for successful registration */}
       <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
