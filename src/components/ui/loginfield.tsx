@@ -123,7 +123,7 @@ export function LoginField() {
       const response = await axios.post("http://localhost:5024/login", { email, password });
       const token = response.data;
       localStorage.setItem("token", token);
-      window.location.replace("/dashboard");
+      window.location.replace("/https://fin2-git-master-ttaariks-projects.vercel.app/dashboard");
     } catch (error) {
       setIsLoading(false);
     }
