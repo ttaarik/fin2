@@ -68,13 +68,6 @@ import { ChevronRight } from "lucide-react"
 
 export default function Dashboard() {
 
-
-  enum account_type {
-    Girokonto,
-    Sparbuch,
-    Tagesgeldkonto
-  };
-
   enum transaction_type {
     withdrawal,
     deposit,
@@ -96,7 +89,7 @@ export default function Dashboard() {
   type Account = {
     account_id: number;
     customer_id: number;
-    account_type: account_type;
+    account_type: string;
     balance: number;
   };
   type Subscription = {
@@ -159,7 +152,7 @@ export default function Dashboard() {
           try {
             // Abrufen der Konten
             const accountsData = await fetchAccountsData(id);
-            
+            console.log(accountsData);
 
             // Abrufen der Transaktionen
             const transactionsData = await fetchTransactionData(id);
@@ -339,6 +332,8 @@ export default function Dashboard() {
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent >
+
+
               <div className="text-2xl font-bold">
                 {loading ? (
                   <div>
@@ -347,10 +342,10 @@ export default function Dashboard() {
                 ) : (
                   accounts.length > 0 ? (
                     accounts
-                      .filter((account) => account.account_type === account_type.Girokonto)
+                      .filter((account) => account.account_type === "Girokonto")
                       .map((account) => (
                         <div key={account.account_id}>
-                          €{account.balance}
+                          €{account.balance.toFixed(2)}
                         </div>
                       ))
                   ) : (
