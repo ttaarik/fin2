@@ -260,17 +260,10 @@ export default function PorfilePage() {
                 <div className="mx-auto grid w-full max-w-6xl gap-2">
                     <h1 className="text-3xl font-semibold">Profile</h1>
                 </div>
-                <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
-                    <nav
-                        className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0"
-                    >
-                        <Link href="#" className="font-semibold text-primary">
-                            General
-                        </Link>
-                        <Link href="#">Password</Link>
-                        <Link href="#">Notifications</Link>
-                        <Link href="#">Support</Link>
-                    </nav>
+                <div className="mx-auto w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
+                    {/* <nav className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0">
+                        
+                    </nav> */}
                     <div className="grid gap-6">
 
                         {/* <Card>

@@ -10,13 +10,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      {/* not working */}
+    <html lang="en">      
       <head>
         <link rel="icon" href="favicon.ico" />
       </head>
-
-
 
       <body>
         <Providers>
