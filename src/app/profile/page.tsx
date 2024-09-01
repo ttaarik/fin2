@@ -23,7 +23,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import './FileUpload.css';
+import '@/app/FileUpload.css';
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
