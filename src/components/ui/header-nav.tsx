@@ -21,40 +21,60 @@ export function HeaderNav({ page }: { page: string }) {
     useEffect(() => {
         if (page === "dashboard") {
             const element = document.getElementById("dashboard-link");
+            const element2 = document.getElementById("dashboard-link-sheet");
             if (element) {
                 element.classList.remove('text-muted-foreground');
+                if (element2) {
+                    element2.classList.remove('text-muted-foreground');
+                }
             }
         } else if (page === "balance") {
             const element = document.getElementById("balance-link");
+            const element2 = document.getElementById("balance-link-sheet");
             if (element) {
                 element.classList.remove('text-muted-foreground');
+                if (element2) {
+                    element2.classList.remove('text-muted-foreground');
+                }
             }
         } else if (page === "subscriptions") {
             const element = document.getElementById("subscription-link");
+            const element2 = document.getElementById("subscription-link-sheet");
             if (element) {
                 element.classList.remove('text-muted-foreground');
+                if (element2) {
+                    element2.classList.remove('text-muted-foreground');
+                }
             }
         } else if (page === "transfer") {
             const element = document.getElementById("transfer-link");
+            const element2 = document.getElementById("transfer-link-sheet");
             if (element) {
                 element.classList.remove('text-muted-foreground');
+                if (element2) {
+                    element2.classList.remove('text-muted-foreground');
+                }
             }
         } else if (page === "cards") {
             const element = document.getElementById("card-link");
+            const element2 = document.getElementById("card-link-sheet");
             if (element) {
                 element.classList.remove('text-muted-foreground');
+                if (element2) {
+                    element2.classList.remove('text-muted-foreground');
+                }
             }
         }
     }, [page]);
 
     return (
         <>
-            <header className="sticky z-20 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-                <nav className="hid den flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+            <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+                <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                     <Link href="#" className="flex items-center gap-2 text-lg font-semibold md:text-base">
                         <Package2 className="h-6 w-6" />
                     </Link>
-                    
+
                     <Link id="dashboard-link" href="dashboard" className="text-muted-foreground transition-colors hover:text-foreground">
                         Dashboard
                     </Link>
@@ -92,31 +112,39 @@ export function HeaderNav({ page }: { page: string }) {
                                 <span className="sr-only">Acme Inc</span>
                             </Link>
                             <Link
-                                href="#"
+                                id="dashboard-link-sheet"
+                                href="dashboard"
                                 className="text-muted-foreground hover:text-foreground"
                             >
                                 Dashboard
                             </Link>
                             <Link
-                                href="#"
+                                id="balance-link-sheet"
+                                href="balance"
                                 className="text-muted-foreground hover:text-foreground"
                             >
-                                Orders
+                                Balance
                             </Link>
                             <Link
-                                href="#"
+                                id="subscriptions-link-sheet"
+                                href="subscriptions"
                                 className="text-muted-foreground hover:text-foreground"
                             >
-                                Products
+                                Subscriptions
                             </Link>
                             <Link
-                                href="#"
+                                id="transfer-link-sheet"
+                                href="transfer"
                                 className="text-muted-foreground hover:text-foreground"
                             >
-                                Customers
+                                Transfer
                             </Link>
-                            <Link href="#" className="hover:text-foreground">
-                                Settings
+                            <Link
+                                id="cards-link-sheet"
+                                href="cards"
+                                className="text-muted-foreground hover:text-foreground"
+                            >
+                                Cards
                             </Link>
                         </nav>
                     </SheetContent>

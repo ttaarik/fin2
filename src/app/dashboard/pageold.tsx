@@ -51,7 +51,6 @@ import { fetchAccountsData } from "../services/accountsService"
 import { fetchTransactionData } from "../services/transactionService"
 import { Skeleton } from "@nextui-org/react"
 import { fetchSubscriptionData } from "../services/subscriptionService"
-import { HeaderNav } from "@/components/ui/header-nav"
 
 export default function Dashboard() {
 
@@ -153,7 +152,7 @@ export default function Dashboard() {
               (tr.transaction_type === "deposit" || tr.transaction_type === "transfer")
             );
 
-
+            
             const outgoing = transactionsData.filter((tr: { sender_account_id: any; transaction_type: string }) =>
               userAccountIds.includes(tr.sender_account_id) &&
               (tr.transaction_type === "withdrawal" || tr.transaction_type === "transfer")
@@ -191,9 +190,111 @@ export default function Dashboard() {
 
   return (
     <div className="flex min-h-screen w-full flex-col">
-      <HeaderNav page="dashboard"></HeaderNav>
+      
+      <header className="sticky z-20 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+                <nav className="hid den flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+                    <Link href="#" className="flex items-center gap-2 text-lg font-semibold md:text-base">
+                        <Package2 className="h-6 w-6" />  
+                    </Link>
+                    
+                    <Link id="dashboard-link" href="dashboard" className="text-muted-foreground transition-colors hover:text-foreground">
+                        Dashboard
+                    </Link>
+                    <Link id="balance-link" href="balance" className="text-muted-foreground transition-colors hover:text-foreground">
+                        Balance
+                    </Link>
+                    <Link id="subscription-link" href="subscriptions" className="text-muted-foreground transition-colors hover:text-foreground">
+                        Subscriptions
+                    </Link>
+                    <Link id="transfer-link" href="transfer" className="text-muted-foreground transition-colors hover:text-foreground">
+                        Transfer
+                    </Link>
+                    <Link id="card-link" href="cards" className="text-muted-foreground transition-colors hover:text-foreground">
+                        Cards
+                    </Link>
+                </nav>
+                <Sheet>
+                    <SheetTrigger asChild>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            className="shrink-0 md:hidden"
+                        >
+                            <Menu className="h-5 w-5" />
+                            <span className="sr-only">Toggle navigation menu</span>
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left">
+                        <nav className="grid gap-6 text-lg font-medium">
+                            <Link
+                                href="#"
+                                className="flex items-center gap-2 text-lg font-semibold"
+                            >
+                                <Package2 className="h-6 w-6" />
+                                <span className="sr-only">Acme Inc</span>
+                            </Link>
+                            <Link
+                                href="#"
+                                className="text-muted-foreground hover:text-foreground"
+                            >
+                                Dashboard
+                            </Link>
+                            <Link
+                                href="#"
+                                className="text-muted-foreground hover:text-foreground"
+                            >
+                                Balance
+                            </Link>
+                            <Link
+                                href="#"
+                                className="text-muted-foreground hover:text-foreground"
+                            >
+                                Subscriptions
+                            </Link>
+                            <Link
+                                href="#"
+                                className="text-muted-foreground hover:text-foreground"
+                            >
+                                Transfer
+                            </Link>
+                            <Link href="#" className="hover:text-foreground">
+                            Cards
+                            </Link>
+                        </nav>
+                    </SheetContent>
+                </Sheet>
+                <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+                    <form className="ml-auto flex-1 sm:flex-initial">
+                        <div className="relative">
+                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                type="search"
+                                placeholder="Search products..."
+                                className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
+                            />
+                        </div>
+                    </form>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="secondary" size="icon" className="rounded-full">
+                                <CircleUser className="h-5 w-5" />
+                                <span className="sr-only">Toggle user menu</span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>Settings</DropdownMenuItem>
+                            <DropdownMenuItem>Support</DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>Logout</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            </header>
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+
           <Card x-chunk="dashboard-01-chunk-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -324,8 +425,7 @@ export default function Dashboard() {
           </Card>
         </div>
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-          <Card
-            className="xl:col-span-2" x-chunk="dashboard-01-chunk-4"
+          <Card className="xl:col-span-2" x-chunk="dashboard-01-chunk-4"
           >
             <CardHeader className="flex flex-row items-center">
               <div className="grid gap-2">
@@ -345,7 +445,7 @@ export default function Dashboard() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Customer</TableHead>
+                    <TableHead>Recipient</TableHead>
                     <TableHead className="hidden xl:table-column">
                       Type
                     </TableHead>
@@ -392,7 +492,9 @@ export default function Dashboard() {
                     )
                   )}
                 </TableBody>
+
               </Table>
+
               <div className="flex justify-between items-center mt-4">
                 <Button disabled={currentPage === 1}
                   onClick={() => setCurrentPage(currentPage - 1)} variant="outline" size="icon">
@@ -410,12 +512,17 @@ export default function Dashboard() {
                 </Button>
 
               </div>
+
             </CardContent>
+
           </Card>
+
+
+
 
           <Card x-chunk="dashboard-01-chunk-5">
             <CardHeader>
-              <CardTitle>Recent Sales</CardTitle>
+              <CardTitle>Bank income</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-8">
               {loading ? (
@@ -448,7 +555,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </div>
-      </main>
-    </div>
+      </main >
+    </div >
   )
 }
