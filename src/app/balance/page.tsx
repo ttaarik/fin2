@@ -1,213 +1,17 @@
 "use client"
-import Link from "next/link"
-import { useState, useEffect } from "react"
 
-import {
-  Activity,
-  ArrowUpRight,
-  ChevronLeft,
-  CircleUser,
-  CreditCard,
-  DollarSign,
-  Menu,
-  Package2,
-  Search,
-  Users,
-} from "lucide-react"
-
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-
-
-import { fetchAccountsData } from '../services/accountsService';
-import { fetchSubscriptionData } from '../services/subscriptionService';
-
-import { Skeleton } from "@/components/ui/skeleton"
-import { fetchTransactionData } from "../services/transactionService"
-
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
-import { ChevronRight } from "lucide-react"
+import { BalanceChart } from "@/components/ui/balance-chart"
+import BankCard from "@/components/ui/bankcard"
 import { HeaderNav } from "@/components/ui/header-nav"
 
-export default function Dashboard() {
-
-  enum transaction_type {
-    withdrawal,
-    deposit,
-    transer
-  }
-
-  type User = {
-    customer_id: number;
-    email: string;
-    password: string;
-    firstname: string;
-    lastname: string;
-    street: string;
-    plz: string;
-    city: string;
-    income: string;
-  };
-
-  type Account = {
-    account_id: number;
-    customer_id: number;
-    account_type: string;
-    balance: number;
-  };
-  type Subscription = {
-    subscription_id: number;
-    customer_id: number;
-    service_name: string;
-    monthly_fee: number;
-    start_date: Date;
-    end_date: Date;
-    active: number;
-  }
-  type Transaction = {
-    transaction_id: number;
-    sender_account_id: number;
-    receiver_account_id: number;
-    amount: number;
-    transaction_type: transaction_type;
-    timestamp: Date;
-    description: string;
-    sender_first_name: string;
-    sender_last_name: string;
-    sender_email: string;
-    receiver_first_name?: string;
-    receiver_last_name?: string;
-    receiver_email?: string;
-  }
+export default function Balance() {
 
 
-  const [accounts, setAccounts] = useState<Account[]>([]);
-  const [subscription, setSubscription] = useState<Subscription[]>([]);
-
-  const [incomeTransactions, setIncomeTransactions] = useState<Transaction[]>([]);
-  const [expenseTransactions, setExpenseTransactions] = useState<Transaction[]>([]);
-
-  const [loading, setLoading] = useState<boolean>(true);
-
-
-  const itemsPerPage = 3;
-
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const totalPages = Math.ceil(expenseTransactions.length / itemsPerPage);
-
-  const paginatedData = expenseTransactions.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-
-  useEffect(() => {
-    const getData = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      if (token) {
-        const decodedToken = atob(token.split('.')[1]);
-        const parsedToken = JSON.parse(decodedToken);
-        const id = parsedToken["customer_id"];
-
-        if (id) {
-          try {
-            // Abrufen der Konten
-            const accountsData = await fetchAccountsData(id);
-            console.log(accountsData);
-
-            // Abrufen der Transaktionen
-            const transactionsData = await fetchTransactionData(id);
-
-            // Abrufen aller Konto-IDs des Benutzers
-            const userAccountIds = accountsData.map((account: { account_id: any }) => account.account_id);
-
-            // Filtern der eingehenden Transaktionen
-            const incoming = transactionsData.filter((tr: { receiver_account_id: any; transaction_type: string }) =>
-              userAccountIds.includes(tr.receiver_account_id) &&
-              (tr.transaction_type === "deposit" || tr.transaction_type === "transfer")
-            );
-
-            
-            const outgoing = transactionsData.filter((tr: { sender_account_id: any; transaction_type: string }) =>
-              userAccountIds.includes(tr.sender_account_id) &&
-              (tr.transaction_type === "withdrawal" || tr.transaction_type === "transfer")
-            );
-
-            setIncomeTransactions(incoming);
-            setExpenseTransactions(outgoing);
-            setAccounts(accountsData);
-
-
-            const subscriptionData = await fetchSubscriptionData(id);
-            if (subscriptionData.length > 0) {
-              const highestSubscription = subscriptionData.reduce((prev: { monthly_fee: number }, current: { monthly_fee: number }) =>
-                (prev.monthly_fee > current.monthly_fee) ? prev : current
-              );
-              setSubscription([highestSubscription]);
-            } else {
-              setSubscription([]);
-            }
-
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
-        } else {
-          console.error("Customer ID is not available.");
-        }
-      } else {
-        console.error("Token is not available.");
-      }
-      setLoading(false);
-    };
-
-    getData();
-  }, []);
-
-  return (
-    <div className="flex min-h-screen w-full flex-col">
-      <HeaderNav page="dashboard"></HeaderNav>
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+    return (
+        <div className="flex min-h-screen w-full flex-col">
+            <HeaderNav page="balance"></HeaderNav>
+            <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+                {/* <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
 
           <Card x-chunk="dashboard-01-chunk-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -242,25 +46,6 @@ export default function Dashboard() {
               <div className="text-xs text-muted-foreground">
                 +20.1% from last month
               </div>
-              {/* {loading ? (
-                // <div className="text-xs text-muted-foreground">Loading...</div>
-                <div className="flex items-center space-x-4">
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-[250px]" />
-                    <Skeleton className="h-4 w-[200px]" />
-                  </div>
-                </div>
-              ) : (
-                accounts.length > 0 ? (
-                  accounts.map((account) => (
-                    <div className="text-xs text-muted-foreground" key={account.account_id}>
-                      +20.1% from last month
-                    </div>
-                  ))
-                ) : (
-                  <div>No subscriptions available</div>
-                )
-              )} */}
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-1">
@@ -337,8 +122,8 @@ export default function Dashboard() {
               </p>
             </CardContent>
           </Card>
-        </div>
-        <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
+        </div> */}
+                {/* <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
           <Card className="xl:col-span-2" x-chunk="dashboard-01-chunk-4"
           >
             <CardHeader className="flex flex-row items-center">
@@ -471,8 +256,15 @@ export default function Dashboard() {
               )}
             </CardContent>
           </Card>
-        </div>
-      </main >
-    </div >
-  )
+        </div> */}
+                <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+                    <BankCard></BankCard>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+                    <BalanceChart></BalanceChart>
+                </div>
+            </main >
+        </div >
+    )
 }

@@ -2,14 +2,6 @@ import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
@@ -17,110 +9,65 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-// import { Input } from "@/components/ui/input" //shadcn
-// import { Input } from "@nextui-org/input";        //nextuis
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import '@/app/FileUpload.css';
 import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-
-
-
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
-
-
-
-
-
-
-
-
-
-import { CheckIcon, ChevronsUpDown } from "lucide-react";
-
-
-import * as RPNInput from "react-phone-number-input";
-
-import flags from "react-phone-number-input/flags";
-
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command";
 import { Input, InputProps } from "@/components/ui/input";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
 
-import { cn } from "@/lib/utils";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { useEffect } from "react"
 
-import { PhoneInput } from "@/components/ui/phone-input";
-import { toast } from "@/components/ui/use-toast";
-import { isValidPhoneNumber } from "react-phone-number-input";
+export function HeaderNav({ page }: { page: string }) {
 
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+    useEffect(() => {
+        if (page === "dashboard") {
+            const element = document.getElementById("dashboard-link");
+            if (element) {
+                element.classList.remove('text-muted-foreground');
+            }
+        } else if (page === "balance") {
+            const element = document.getElementById("balance-link");
+            if (element) {
+                element.classList.remove('text-muted-foreground');
+            }
+        } else if (page === "subscriptions") {
+            const element = document.getElementById("subscription-link");
+            if (element) {
+                element.classList.remove('text-muted-foreground');
+            }
+        } else if (page === "transfer") {
+            const element = document.getElementById("transfer-link");
+            if (element) {
+                element.classList.remove('text-muted-foreground');
+            }
+        } else if (page === "cards") {
+            const element = document.getElementById("card-link");
+            if (element) {
+                element.classList.remove('text-muted-foreground');
+            }
+        }
+    }, [page]);
 
-export function HeaderNav() {
     return (
         <>
             <header className="sticky z-20 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-                <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-                    <Link
-                        href="#"
-                        className="flex items-center gap-2 text-lg font-semibold md:text-base"
-                    >
+                <nav className="hid den flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+                    <Link href="#" className="flex items-center gap-2 text-lg font-semibold md:text-base">
                         <Package2 className="h-6 w-6" />
-                        <span className="sr-only">Acme Inc</span>
                     </Link>
-                    <Link
-                        href="#"
-                        className="text-muted-foreground transition-colors hover:text-foreground"
-                    >
+                    
+                    <Link id="dashboard-link" href="dashboard" className="text-muted-foreground transition-colors hover:text-foreground">
                         Dashboard
                     </Link>
-                    <Link
-                        href="#"
-                        className="text-muted-foreground transition-colors hover:text-foreground"
-                    >
+                    <Link id="balance-link" href="balance" className="text-muted-foreground transition-colors hover:text-foreground">
                         Balance
                     </Link>
-                    <Link
-                        href="#"
-                        className="text-muted-foreground transition-colors hover:text-foreground"
-                    >
+                    <Link id="subscription-link" href="subscriptions" className="text-muted-foreground transition-colors hover:text-foreground">
                         Subscriptions
                     </Link>
-                    <Link
-                        href="#"
-                        className="text-muted-foreground transition-colors hover:text-foreground"
-                    >
+                    <Link id="transfer-link" href="transfer" className="text-muted-foreground transition-colors hover:text-foreground">
                         Transfer
                     </Link>
-                    <Link
-                        href="#"
-                        className="text-muted-foreground transition-colors hover:text-foreground"
-                    >
+                    <Link id="card-link" href="cards" className="text-muted-foreground transition-colors hover:text-foreground">
                         Cards
                     </Link>
                 </nav>

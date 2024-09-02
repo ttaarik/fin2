@@ -19,7 +19,11 @@ beim login diese lade animation nach dem klicken vlt mit shadcn reloadicon butto
 
 bei überweisung (transactions) könnte man einen slider von NextUI verwenden um anzugeben wie viel man überweisen will
 
-modal einbauen wie bei BTV SECURITY wenn man überweisen möchte (alle daten anzeigen und betrag und uhrzeit)!
+modal einbauen wie bei btsecurtiy wenn man überweisen möchte (alle daten anzeigen und betrag und uhrzeit)!
 
 popover wenn transaktion erfolgreich war von NextUI
+
+
+chart.js Other Charts/Polar area centered point labels
+
 
