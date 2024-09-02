@@ -261,7 +261,7 @@ export default function Balance() {
                     <BankCard></BankCard>
                 </div>
 
-                <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+                <div className="">
                     <BalanceChart></BalanceChart>
                 </div>
             </main >

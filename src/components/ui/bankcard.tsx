@@ -4,8 +4,7 @@ import { BalanceChart } from "./balance-chart";
 
 export default function BankCard() {
     return (
-        <div className="flex flex-col gap-4 p-4">
-
+        <div className="flex flex-col gap-4">
             <Card className="py-4">
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                     <p className="text-tiny uppercase font-bold">Card 1</p>
