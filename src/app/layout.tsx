@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 
 
@@ -16,9 +17,11 @@ export default function RootLayout({
       </head>
 
       <body>
-        <Providers>
+        <TooltipProvider>
+          <Providers>
           {children}
         </Providers>
+        </TooltipProvider>
       </body>
     </html>
   );

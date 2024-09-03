@@ -64,7 +64,7 @@ export function PieChartDonutText() {
     <Card className="flex flex-col z-1">
       <CardHeader className="items-center pb-0">
         <CardTitle>Expenses by category</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        {/* <CardDescription>January - June 2024</CardDescription> */}
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
