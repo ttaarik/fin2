@@ -61,7 +61,7 @@ export function PieChartDonutText() {
   }, [])
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col z-1">
       <CardHeader className="items-center pb-0">
         <CardTitle>Expenses by category</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
@@ -71,7 +71,7 @@ export function PieChartDonutText() {
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
         >
-          <PieChart>
+          <PieChart className="z-2">
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
