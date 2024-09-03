@@ -147,27 +147,27 @@ export default function Balance() {
         </div>
         <div>
           <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
-            <CardHeader className="flex flex-row items-start bg-muted/50">
+            <CardHeader className="items-center">
               <Image
                 src="https://www.mastercard.us/content/dam/public/mastercardcom/na/us/en/large-enterprises/images/mastercard-corporate-multi-card-1280x720.jpg"
-                width={1000}
-                height={1000}
+                width={520}
+                height={285}
                 alt="Picture of your card"
               />
             </CardHeader>
             <CardContent className="p-6 text-sm">
               <div className="grid gap-3">
-                <div className="font-semibold">Order Details</div>
+                <div className="font-semibold">Card Information</div>
                 <ul className="grid gap-3">
                   <li className="flex items-center justify-between">
                     <span className="text-muted-foreground">
-                      Glimmer Lamps x <span>2</span>
+                      Card balance
                     </span>
                     <span>$250.00</span>
                   </li>
                   <li className="flex items-center justify-between">
                     <span className="text-muted-foreground">
-                      Aqua Filters x <span>1</span>
+                      Credit limit
                     </span>
                     <span>$49.00</span>
                   </li>

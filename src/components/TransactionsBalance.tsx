@@ -88,10 +88,10 @@ const TransactionsBalance = () => {
                     </Avatar>
                     <div className="grid gap-1">
                         <p className="text-sm font-medium leading-none">
-                            Nora Omic
+                            Max Mustermann
                         </p>
                         <p className="text-sm text-muted-foreground">
-                            omic.nora@gamil.com
+                            max.mustermann@gamil.com
                         </p>
                     </div>
                     <div className="ml-auto font-medium">+12€</div>
