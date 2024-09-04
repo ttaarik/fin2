@@ -14,6 +14,7 @@ import {
     Package,
     Package2,
     PanelLeft,
+    Plus,
     Search,
     Settings,
     ShoppingCart,
@@ -30,7 +31,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { Button } from "@/components/ui/button"
+import { Button } from "@nextui-org/react";
 import {
     Card,
     CardContent,
@@ -105,6 +106,7 @@ export default function Cards() {
                 <div>
                     <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
                         <CardHeader className="items-center flex flex-row">
+
                             <ChevronLeft size={60} />
                             <Image
                                 src="https://www.mastercard.us/content/dam/public/mastercardcom/na/us/en/large-enterprises/images/mastercard-corporate-multi-card-1280x720.jpg"
@@ -159,11 +161,24 @@ export default function Cards() {
                                     </li>
                                 </ul>
                             </div>
+
+
                             {/* <Separator className="my-4" /> das ist die*/}
                         </CardContent>
+
                     </Card>
+                    <CardFooter className="flex flex-row items-center mt-[0.5em] px-6 py-3">
+                        <div className="m-auto">
+                            <Button radius="full" color="primary" variant="shadow">
+                                <Plus />New Card 
+                            </Button>
+                        </div>
+
+                    </CardFooter>
+
                 </div>
             </main>
         </div >
     )
 }
+
