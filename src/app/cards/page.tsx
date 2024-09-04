@@ -85,9 +85,6 @@ import TransactionsBalance from "@/components/TransactionsBalance"
 import { BalanceChart } from "@/components/ui/balance-chart"
 
 
-export const description =
-    "An orders dashboard with a sidebar navigation. The sidebar has icon navigation. The content area has a breadcrumb and search in the header. The main area has a list of recent orders with a filter and export button. The main area also has a detailed view of a single order with order details, shipping information, billing information, customer information, and payment information."
-
 export default function Cards() {
     return (
         <div className="flex min-h-screen w-full flex-col">
@@ -98,10 +95,7 @@ export default function Cards() {
                         <PieChartDonutText></PieChartDonutText>
                         <TransactionsBalance></TransactionsBalance>
                     </div>
-
                     <BalanceChart></BalanceChart>
-
-
                 </div>
                 <div>
                     <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
@@ -161,11 +155,8 @@ export default function Cards() {
                                     </li>
                                 </ul>
                             </div>
-
-
                             {/* <Separator className="my-4" /> das ist die*/}
                         </CardContent>
-
                     </Card>
                     <CardFooter className="flex flex-row items-center mt-[0.5em] px-6 py-3">
                         <div className="m-auto">
@@ -173,9 +164,7 @@ export default function Cards() {
                                 <Plus />New Card 
                             </Button>
                         </div>
-
                     </CardFooter>
-
                 </div>
             </main>
         </div >

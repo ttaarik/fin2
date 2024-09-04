@@ -17,7 +17,6 @@ import { Input, InputProps } from "@/components/ui/input";
 import { useEffect } from "react"
 
 export function HeaderNav({ page }: { page: string }) {
-
     useEffect(() => {
         if (page === "dashboard") {
             const element = document.getElementById("dashboard-link");
@@ -151,9 +150,7 @@ export function HeaderNav({ page }: { page: string }) {
                 </Sheet>
                 <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
                     <form className="ml-auto flex-1 sm:flex-initial">
-                        
                     </form>
-                    
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="secondary" size="icon" className="rounded-full">
