@@ -84,6 +84,13 @@ import { PieChartDonutText } from "@/components/ui/PieChartDonutText"
 import TransactionsBalance from "@/components/TransactionsBalance"
 import { BalanceChart } from "@/components/ui/balance-chart"
 
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel"
 
 export default function Cards() {
     return (
@@ -100,7 +107,6 @@ export default function Cards() {
                 <div>
                     <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
                         <CardHeader className="items-center flex flex-row">
-
                             <ChevronLeft size={60} />
                             <Image
                                 src="https://www.mastercard.us/content/dam/public/mastercardcom/na/us/en/large-enterprises/images/mastercard-corporate-multi-card-1280x720.jpg"
@@ -161,7 +167,7 @@ export default function Cards() {
                     <CardFooter className="flex flex-row items-center mt-[0.5em] px-6 py-3">
                         <div className="m-auto">
                             <Button radius="full" color="primary" variant="shadow">
-                                <Plus />New Card 
+                                <Plus />New Card
                             </Button>
                         </div>
                     </CardFooter>
