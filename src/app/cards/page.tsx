@@ -161,7 +161,6 @@ export default function Cards() {
                                     </li>
                                 </ul>
                             </div>
-                            {/* <Separator className="my-4" /> das ist die*/}
                         </CardContent>
                     </Card>
                     <CardFooter className="flex flex-row items-center mt-[0.5em] px-6 py-3">
