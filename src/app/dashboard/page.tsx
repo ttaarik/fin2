@@ -5,12 +5,8 @@ import {
   ArrowUpRight,
   ChevronLeft,
   ChevronRight,
-  CircleUser,
   CreditCard,
   DollarSign,
-  Menu,
-  Package2,
-  Search,
   Users,
 } from "lucide-react"
 
@@ -28,16 +24,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+
 import {
   Table,
   TableBody,
@@ -227,25 +214,6 @@ export default function Dashboard() {
               <div className="text-xs text-muted-foreground">
                 +20.1% from last month
               </div>
-              {/* {loading ? (
-                // <div className="text-xs text-muted-foreground">Loading...</div>
-                <div className="flex items-center space-x-4">
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-[250px]" />
-                    <Skeleton className="h-4 w-[200px]" />
-                  </div>
-                </div>
-              ) : (
-                accounts.length > 0 ? (
-                  accounts.map((account) => (
-                    <div className="text-xs text-muted-foreground" key={account.account_id}>
-                      +20.1% from last month
-                    </div>
-                  ))
-                ) : (
-                  <div>No subscriptions available</div>
-                )
-              )} */}
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-1">
@@ -342,57 +310,75 @@ export default function Dashboard() {
               </Button>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Customer</TableHead>
-                    <TableHead className="hidden xl:table-column">
-                      Type
-                    </TableHead>
-                    <TableHead className="hidden xl:table-column">
-                      Status
-                    </TableHead>
-                    <TableHead className="hidden xl:table-column">
-                      Date
-                    </TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {loading ? (
-                    <Skeleton className="h-4 w-[200px]" />
-                  ) : (
-                    paginatedData.length > 0 ? (
-                      paginatedData.map((tr) => (
-                        <TableRow key={tr.transaction_id}>
-                          <TableCell>
-                            <div className="font-medium">
-                              {tr.receiver_first_name} {tr.receiver_last_name}
-                            </div>
-                            <div className="hidden text-sm text-muted-foreground md:inline">
-                              {tr.receiver_email}
-                            </div>
-                          </TableCell>
-                          <TableCell className="hidden xl:table-column">
-                            {tr.transaction_type === transaction_type.withdrawal ? 'Withdrawal' : 'Transfer'}
-                          </TableCell>
-                          <TableCell className="hidden xl:table-column">
-                            <Badge className="text-xs" variant="outline">
-                              Approved
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                            {new Date(tr.timestamp).toDateString()}
-                          </TableCell>
-                          <TableCell className="text-right">-€{tr.amount}</TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <div>No transactions available</div>
-                    )
-                  )}
-                </TableBody>
-              </Table>
+            <Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Customer</TableHead>
+      <TableHead className="hidden xl:table-column">Type</TableHead>
+      <TableHead className="hidden xl:table-column">Status</TableHead>
+      <TableHead className="hidden xl:table-column">Date</TableHead>
+      <TableHead className="text-right">Amount</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {loading ? (
+      // Ensure that a consistent number of rows are rendered during loading
+      Array.from({ length: itemsPerPage }).map((_, index) => (
+        <TableRow key={index}>
+          <TableCell>
+            <Skeleton className="h-4 w-[150px]" />
+          </TableCell>
+          <TableCell className="hidden xl:table-column">
+            <Skeleton className="h-4 w-[100px]" />
+          </TableCell>
+          <TableCell className="hidden xl:table-column">
+            <Skeleton className="h-4 w-[80px]" />
+          </TableCell>
+          <TableCell className="hidden xl:table-column">
+            <Skeleton className="h-4 w-[120px]" />
+          </TableCell>
+          <TableCell className="text-right">
+            <Skeleton className="h-4 w-[50px]" />
+          </TableCell>
+        </TableRow>
+      ))
+    ) : paginatedData.length > 0 ? (
+      paginatedData.map((tr) => (
+        <TableRow key={tr.transaction_id}>
+          <TableCell>
+            <div className="font-medium">
+              {tr.receiver_first_name} {tr.receiver_last_name}
+            </div>
+            <div className="hidden text-sm text-muted-foreground md:inline">
+              {tr.receiver_email}
+            </div>
+          </TableCell>
+          <TableCell className="hidden xl:table-column">
+            {tr.transaction_type === transaction_type.withdrawal
+              ? "Withdrawal"
+              : "Transfer"}
+          </TableCell>
+          <TableCell className="hidden xl:table-column">
+            <Badge className="text-xs" variant="outline">
+              Approved
+            </Badge>
+          </TableCell>
+          <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
+            {new Date(tr.timestamp).toDateString()}
+          </TableCell>
+          <TableCell className="text-right">-€{tr.amount}</TableCell>
+        </TableRow>
+      ))
+    ) : (
+      <TableRow>
+        <TableCell colSpan={5} className="text-center">
+          No transactions available
+        </TableCell>
+      </TableRow>
+    )}
+  </TableBody>
+</Table>
+
               <div className="flex justify-between items-center mt-4">
                 <Button disabled={currentPage === 1}
                   onClick={() => setCurrentPage(currentPage - 1)} variant="outline" size="icon">
