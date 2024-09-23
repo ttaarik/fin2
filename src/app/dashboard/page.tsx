@@ -185,12 +185,10 @@ export default function Dashboard() {
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Balance
-              </CardTitle> 
+              </CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent >
-
-
+            <CardContent>
               <div className="text-2xl font-bold">
                 {loading ? (
                   <div>
@@ -219,7 +217,9 @@ export default function Dashboard() {
           <Card x-chunk="dashboard-01-chunk-1">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Subscriptions
+                <Link href="/subscriptions">
+                  Balance
+                </Link>
               </CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
@@ -310,74 +310,74 @@ export default function Dashboard() {
               </Button>
             </CardHeader>
             <CardContent>
-            <Table>
-  <TableHeader>
-    <TableRow>
-      <TableHead>Customer</TableHead>
-      <TableHead className="hidden xl:table-column">Type</TableHead>
-      <TableHead className="hidden xl:table-column">Status</TableHead>
-      <TableHead className="hidden xl:table-column">Date</TableHead>
-      <TableHead className="text-right">Amount</TableHead>
-    </TableRow>
-  </TableHeader>
-  <TableBody>
-    {loading ? (
-      // Ensure that a consistent number of rows are rendered during loading
-      Array.from({ length: itemsPerPage }).map((_, index) => (
-        <TableRow key={index}>
-          <TableCell>
-            <Skeleton className="h-4 w-[150px]" />
-          </TableCell>
-          <TableCell className="hidden xl:table-column">
-            <Skeleton className="h-4 w-[100px]" />
-          </TableCell>
-          <TableCell className="hidden xl:table-column">
-            <Skeleton className="h-4 w-[80px]" />
-          </TableCell>
-          <TableCell className="hidden xl:table-column">
-            <Skeleton className="h-4 w-[120px]" />
-          </TableCell>
-          <TableCell className="text-right">
-            <Skeleton className="h-4 w-[50px]" />
-          </TableCell>
-        </TableRow>
-      ))
-    ) : paginatedData.length > 0 ? (
-      paginatedData.map((tr) => (
-        <TableRow key={tr.transaction_id}>
-          <TableCell>
-            <div className="font-medium">
-              {tr.receiver_first_name} {tr.receiver_last_name}
-            </div>
-            <div className="hidden text-sm text-muted-foreground md:inline">
-              {tr.receiver_email}
-            </div>
-          </TableCell>
-          <TableCell className="hidden xl:table-column">
-            {tr.transaction_type === transaction_type.withdrawal
-              ? "Withdrawal"
-              : "Transfer"}
-          </TableCell>
-          <TableCell className="hidden xl:table-column">
-            <Badge className="text-xs" variant="outline">
-              Approved
-            </Badge>
-          </TableCell>
-          <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-            {new Date(tr.timestamp).toDateString()}
-          </TableCell>
-          <TableCell className="text-right">-€{tr.amount}</TableCell>
-        </TableRow>
-      ))
-    ) : (
-      <TableRow>
-        <TableCell colSpan={5} className="text-center">
-          No transactions available
-        </TableCell>
-      </TableRow>
-    )}
-  </TableBody>
-</Table>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Customer</TableHead>
+                    <TableHead className="hidden xl:table-column">Type</TableHead>
+                    <TableHead className="hidden xl:table-column">Status</TableHead>
+                    <TableHead className="hidden xl:table-column">Date</TableHead>
+                    <TableHead className="text-right">Amount</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {loading ? (
+                    // Ensure that a consistent number of rows are rendered during loading
+                    Array.from({ length: itemsPerPage }).map((_, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <Skeleton className="h-4 w-[150px]" />
+                        </TableCell>
+                        <TableCell className="hidden xl:table-column">
+                          <Skeleton className="h-4 w-[100px]" />
+                        </TableCell>
+                        <TableCell className="hidden xl:table-column">
+                          <Skeleton className="h-4 w-[80px]" />
+                        </TableCell>
+                        <TableCell className="hidden xl:table-column">
+                          <Skeleton className="h-4 w-[120px]" />
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Skeleton className="h-4 w-[50px]" />
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : paginatedData.length > 0 ? (
+                    paginatedData.map((tr) => (
+                      <TableRow key={tr.transaction_id}>
+                        <TableCell>
+                          <div className="font-medium">
+                            {tr.receiver_first_name} {tr.receiver_last_name}
+                          </div>
+                          <div className="hidden text-sm text-muted-foreground md:inline">
+                            {tr.receiver_email}
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden xl:table-column">
+                          {tr.transaction_type === transaction_type.withdrawal
+                            ? "Withdrawal"
+                            : "Transfer"}
+                        </TableCell>
+                        <TableCell className="hidden xl:table-column">
+                          <Badge className="text-xs" variant="outline">
+                            Approved
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
+                          {new Date(tr.timestamp).toDateString()}
+                        </TableCell>
+                        <TableCell className="text-right">-€{tr.amount}</TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center">
+                        No transactions available
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
 
               <div className="flex justify-between items-center mt-4">
                 <Button disabled={currentPage === 1}
@@ -413,7 +413,7 @@ export default function Dashboard() {
                   incomeTransactions.map((tr) => (
                     <div key={tr.transaction_id} className="flex items-center gap-4">
                       <Avatar className="hidden h-9 w-9 sm:flex">
-                        <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                        
                         <AvatarFallback>{tr.sender_first_name[0]}{tr.sender_last_name[0]}</AvatarFallback>
                       </Avatar>
                       <div className="grid gap-1">
